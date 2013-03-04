@@ -25,5 +25,5 @@ Second, pickle the data using ``pick_best_model_v2.py``
 
 Third, run the django server using ``manage.py`` and run the rpc server using ``queue/rpc_server.py``
 
-``pick_best_model_v1.py`` should only be used for testing purposes
-``multi_q.py`` is not a good way to create a multicore vectorization of new essays.  Use ``rpc_server.py`` instead.
+- ``pick_best_model_v1.py`` should only be used for testing purposes
+- ``multi_q.py`` is not a good way to create a multicore vectorization of new essays.  Use ``rpc_server.py`` instead.
