@@ -17,8 +17,7 @@ from my_exceptions.essay_exceptions import ShortEssayException
 from my_exceptions.essay_exceptions import PrivateProfileException
 from my_exceptions.essay_exceptions import ProfileNotFoundException
 import my_exceptions
-import mysite.urls
-from mysite.storage import profile_storage
+import okstereotype.urls
 from time import sleep, time
 from tag_cloud.generate_image import generate_image
 from xkcd_graphs.generate_xkcd import plot_essay_len

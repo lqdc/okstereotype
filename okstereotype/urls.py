@@ -3,9 +3,9 @@ sys.path.append("/home/roman/Dropbox/django_practice/mysite/")
 sys.path.append("/home/roman/Dropbox/django_practice/mysite/mysite")
 
 from django.conf.urls import patterns, include, url
-import mysite.views
+import okstereotype.views
 import settings
-from multiprocessing import Process, cpu_count
+# from multiprocessing import Process, cpu_count
 import atexit
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 import os
