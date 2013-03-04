@@ -1,7 +1,4 @@
 import sys
-sys.path.append("/home/roman/Dropbox/django_practice/mysite/")
-sys.path.append("/home/roman/Dropbox/django_practice/mysite/mysite")
-
 from django.conf.urls import patterns, include, url
 import okstereotype.views
 import settings
