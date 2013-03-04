@@ -8,12 +8,12 @@ Source code for okstereotype.me
 Dependencies
 ~~~~~~~~~~~~
 
-scikit-learn https://github.com/scikit-learn/scikit-learn
-django https://www.djangoproject.com/
-rabbitmq http://www.rabbitmq.com/
-pandas http://pandas.pydata.org/
-Amueller's word cloud https://github.com/amueller/word_cloud
-XKCD plot for matplotlib http://jakevdp.github.com/blog/2012/10/07/xkcd-style-plots-in-matplotlib/
+- scikit-learn https://github.com/scikit-learn/scikit-learn
+- django https://www.djangoproject.com/
+- rabbitmq http://www.rabbitmq.com/
+- pandas http://pandas.pydata.org/
+- Amueller's word cloud https://github.com/amueller/word_cloud
+- XKCD plot for matplotlib http://jakevdp.github.com/blog/2012/10/07/xkcd-style-plots-in-matplotlib/
 
 Usage
 ~~~~~
