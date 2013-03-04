@@ -1,0 +1,97 @@
+<!DOCTYPE html> 
+<meta charset="utf-8">
+<!-- <script src="http://d3js.org/d3.v3.min.js"></script> -->
+<script src="d3.v2.min.js"></script>
+<script src="nv.d3.js"></script>
+<script src="fisheye.js"></script> 
+<link href="nv.d3.css" rel="stylesheet" type="text/css">
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+<script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.9.2/jquery-ui.min.js"></script>
+<style>
+#chart svg {
+  height: 400px;
+}
+text {
+  font: 22px sans-serif;
+}
+</style>
+
+
+<div id="chart">
+  <svg></svg>
+</div>
+
+<script>
+
+var age_elength_data = [
+  {
+    key: "Guys",
+    color: "#0b6ec3",
+    values:
+      [      
+        { x : 18, y : 306.77},
+        { x : 19, y : 335.71},
+        { x : 20, y : 360.12},
+        { x : 21, y : 369.37},
+        { x : 22, y : 381.85},
+        { x : 23, y : 393.69},
+        { x : 24, y : 402.00},
+        { x : 25, y : 409.11},
+        { x : 26, y : 421.40},
+        { x : 27, y : 421.26},
+        { x : 28, y : 434.02},
+        { x : 29, y : 441.63},
+        { x : 30, y : 446.46},
+        { x : 31, y : 445.99},
+        { x : 32, y : 452.90},
+      ]
+  },
+  {
+    key: "Girls",
+    color: "#c3600b",
+    values:
+      [      
+        { x : 18, y : 338.51},
+        { x : 19, y : 352.44},
+        { x : 20, y : 369.14},
+        { x : 21, y : 386.51},
+        { x : 22, y : 391.82},
+        { x : 23, y : 398.73},
+        { x : 24, y : 407.13},
+        { x : 25, y : 419.66},
+        { x : 26, y : 426.60},
+        { x : 27, y : 436.56},
+        { x : 28, y : 446.75},
+        { x : 29, y : 458.91},
+        { x : 30, y : 482.18},
+        { x : 31, y : 487.76},
+        { x : 32, y : 477.39},
+    ]
+  }
+]
+
+nv.addGraph(function() {
+  var chart = nv.models.lineChart();
+
+  chart.xAxis
+      .axisLabel('Age')
+      .tickFormat(d3.format(',r'));
+
+  chart.yAxis
+      .axisLabel('Word Count')
+      .margin({left:75})
+      .tickFormat(d3.format(',.1f'));
+  chart.margin({bottom: 80, left: 80});
+
+  d3.select('#chart svg')
+      .datum(age_elength_data)
+    .transition().duration(500)
+      .call(chart);
+
+  nv.utils.windowResize(chart.update);
+
+  return chart;
+});
+
+</script>
+</body>

@@ -1,0 +1,81 @@
+<!DOCTYPE html> 
+<meta charset="utf-8">
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+<script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.9.2/jquery-ui.min.js"></script>
+<!-- <script src="http://d3js.org/d3.v3.min.js"></script> -->
+<script src="d3.v2.min.js"></script>
+<script src="nv.d3.js"></script> 
+<script src="fisheye.js"></script> 
+<link href="nv.d3.css" rel="stylesheet" type="text/css">
+<script src="stream_layers.js"></script>
+<style>
+#chart svg {
+  height: 500px;
+}
+text {
+  font: 12px sans-serif;
+}
+</style>
+
+
+<div id="chart">
+  <svg></svg>
+</div>
+
+<script>
+
+var religion_data = [
+  {
+    key: "Atheism",
+    values:
+      [      
+        { x : 18, y : 536 },
+        { x : 19, y : 1034 },
+        { x : 20, y : 1534 },
+        { x : 21, y : 1911 },
+        { x : 22, y : 2628 },
+        { x : 23, y : 3271 },
+        { x : 24, y : 3444 },
+        { x : 25, y : 3435 },
+        { x : 26, y : 3264 },
+        { x : 27, y : 2869 },
+        { x : 28, y : 2427 },
+        { x : 29, y : 2036 },
+        { x : 30, y : 1723 },
+        { x : 31, y : 1301 },
+        { x : 32, y : 1067 },
+      ]
+  },
+    {
+    key: "Christianity",
+    values:
+      [
+        { x : 18, y : 791 },
+        { x : 19, y : 1739 },
+        { x : 20, y : 2438 },
+        { x : 21, y : 2958 },
+        { x : 22, y : 3696 },
+        { x : 23, y : 4251 },
+        { x : 24, y : 4166 },
+        { x : 25, y : 3856 },
+        { x : 26, y : 3350 },
+        { x : 27, y : 2893 },
+        { x : 28, y : 2452 },
+        { x : 29, y : 1999 },
+        { x : 30, y : 1568 },
+        { x : 31, y : 1312 },
+        { x : 32, y : 1022 },
+      ]
+    }
+
+]
+nv.addGraph(function() {
+  var chart = nv.models.stackedAreaChart().clipEdge(true);
+  d3.select('#chart svg').datum(religion_data).transition().duration(500).call(chart);
+  nv.utils.windowResize(chart.update);
+
+  return chart;
+});
+
+</script>
+</body>

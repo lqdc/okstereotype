@@ -1,0 +1,81 @@
+<!DOCTYPE html> 
+<meta charset="utf-8">
+<!-- <script src="http://d3js.org/d3.v3.min.js"></script> -->
+<script src="d3.v2.min.js"></script>
+<script src="nv.d3.js"></script> 
+<link href="nv.d3.css" rel="stylesheet" type="text/css">
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+<script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.9.2/jquery-ui.min.js"></script>
+<style>
+#chart svg {
+  height: 500px;
+}
+text {
+  font: 12px sans-serif;
+}
+</style>
+
+
+<div id="chart">
+  <svg></svg>
+</div>
+
+<script>
+
+var gender_ethnicities_data = [
+  {
+    key: "Guys",
+    color: "#0b6ec3",
+    values:
+      [      
+        { x : 18, y : 1580 /177335},
+        { x : 19, y : 3915 /177335},
+        { x : 20, y : 6746 /177335},
+        { x : 21, y : 9181 /177335},
+        { x : 22, y : 13148/177335 },
+        { x : 23, y : 16441/177335 },
+        { x : 24, y : 18625/177335 },
+        { x : 25, y : 18867/177335 },
+        { x : 26, y : 18003/177335 },
+        { x : 27, y : 16633/177335 },
+        { x : 28, y : 14582/177335 },
+        { x : 29, y : 12837/177335 },
+        { x : 30, y : 10803/177335 },
+        { x : 31, y : 8797 /177335},
+        { x : 32, y : 7445 /177335},
+      ]
+  },
+    {
+    key: "Girls",
+    color: "#c3600b",
+    values:
+      [
+        { x : 18, y : 2185/177335 },
+        { x : 19, y : 3967/177335 },
+        { x : 20, y : 5481/177335 },
+        { x : 21, y : 6679/177335 },
+        { x : 22, y : 9181/177335 },
+        { x : 23, y : 10436/177335 },
+        { x : 24, y : 9902/177335 },
+        { x : 25, y : 8557/177335 },
+        { x : 26, y : 7243/177335 },
+        { x : 27, y : 5672/177335 },
+        { x : 28, y : 4203/177335 },
+        { x : 29, y : 2962/177335 },
+        { x : 30, y : 1976/177335 },
+        { x : 31, y : 1421/177335 },
+        { x : 32, y : 1094/177335 },
+      ]
+    }
+]
+nv.addGraph(function() {  
+    var chart = nv.models.multiBarChart().clipEdge(true);
+    chart.yAxis.axisLabel("Percent of Total Population").tickFormat(d3.format("1.1%"));
+    chart.xAxis.axisLabel("Ages");
+    chart.margin({bottom: 60, left: 80});
+    d3.select('#chart svg').datum(gender_ethnicities_data).transition().duration(500).call(chart);
+    nv.utils.windowResize(chart.update);
+    return chart;
+});
+</script>
+</body>

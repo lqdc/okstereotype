@@ -1,0 +1,61 @@
+<!DOCTYPE html> 
+<meta charset="utf-8">
+<!-- <script src="http://d3js.org/d3.v3.min.js"></script> -->
+<script src="d3.v2.min.js"></script>
+<script src="nv.d3.js"></script> 
+<link href="nv.d3.css" rel="stylesheet" type="text/css">
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+<script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.9.2/jquery-ui.min.js"></script>
+<style>
+#chart svg {
+  height: 500px;
+}
+text {
+  font: 22px sans-serif;
+}
+</style>
+
+
+<div id="chart">
+  <svg></svg>
+</div>
+
+<script>
+
+var age_conf_data =  [
+    {
+      values: [
+          { x : 0, y : .3066},
+          { x : 1, y : .5660},
+          { x : 2, y : .7570},
+          { x : 3, y : .8816},
+          { x : 4, y : .9473},
+          { x : 5, y : .9786},
+          { x : 6, y : .9928},
+          { x : 7, y : .9976},
+          { x : 8, y : .9993},
+          { x : 9, y : .9997},
+          { x : 10, y : .9999},
+          { x : 11, y : 1.000},
+          ],
+          key: "Percent Essays Predicted Correctly",
+          color: '#bd362f'
+    }
+  ];
+nv.addGraph(function() {
+  var chart = nv.models.lineChart();
+
+  chart.xAxis
+      .axisLabel('Within Years')
+      .tickFormat(d3.format('.1d'));
+
+  chart.yAxis
+      .axisLabel('Percent Right').margin({left:85})
+      .tickFormat(d3.format('.1%'));
+  chart.margin({bottom: 60, left: 100, right:60});
+  d3.select('#chart svg').datum(age_conf_data).transition().duration(500).call(chart);
+  nv.utils.windowResize(chart.update);
+  return chart;
+});
+</script>
+</body>

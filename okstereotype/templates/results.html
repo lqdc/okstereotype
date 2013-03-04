@@ -1,0 +1,694 @@
+<html>
+<!doctype html>
+<!-- paulirish.com/2008/conditional-stylesheets-vs-css-hacks-answer-neither/ -->
+<!--[if lt IE 7]> <html class="no-js ie6 oldie" lang="en"> <![endif]-->
+<!--[if IE 7]>    <html class="no-js ie7 oldie" lang="en"> <![endif]-->
+<!--[if IE 8]>    <html class="no-js ie8 oldie" lang="en"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en"> <!--<![endif]-->
+<head>
+   <meta charset="utf-8" />
+   <!-- Always force latest IE rendering engine (even in intranet) & Chrome Frame -->
+   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+   <!-- Mobile viewport optimized: h5bp.com/viewport -->
+   <meta name="viewport" content="width=device-width">
+
+   <title>StereotypeMe!</title>
+
+   <meta name="robots" content="index, nofollow">
+   <meta name="description" content="Stereotyping app for dating websites" />
+   <meta name="keywords" content="StereotypeMe!, stereotypeme, stereotypeme!" />
+   <meta name="author" content="Roman Sinayev"/>
+   
+   <!-- remove or comment this line if you want to use the local fonts -->
+   <link href='http://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700' rel='stylesheet' type='text/css'>
+
+   <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}content/css/bootstrap.css">
+   <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}content/css/bootstrap-responsive.css">
+   <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}content/css/bootmetro.css">
+   <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}content/css/bootmetro-tiles.css">
+   <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}content/css/bootmetro-charms.css">
+   <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}content/css/metro-ui-light.css">
+   <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}content/css/icomoon.css">
+   <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}content/css/nv.d3.css" >
+   <!--  these two css are to use only for documentation -->
+   <!-- <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}content/css/demo.css"> -->
+   <!-- <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}scripts/google-code-prettify/prettify.css" > -->
+
+   <!-- Le fav and touch icons -->
+   <link rel="shortcut icon" href="{{ STATIC_URL }}content/ico/rs.ico">
+   <!-- <link rel="apple-touch-icon-precomposed" sizes="144x144" href="content/ico/apple-touch-icon-144-precomposed.png"> -->
+   <!-- <link rel="apple-touch-icon-precomposed" sizes="114x114" href="content/ico/apple-touch-icon-114-precomposed.png"> -->
+   <!-- <link rel="apple-touch-icon-precomposed" sizes="72x72" href="content/ico/apple-touch-icon-72-precomposed.png"> -->
+   <!-- <link rel="apple-touch-icon-precomposed" href="content/ico/apple-touch-icon-57-precomposed.png"> -->
+  
+   <!-- All JavaScript at the bottom, except for Modernizr and Respond.
+      Modernizr enables HTML5 elements & feature detects; Respond is a polyfill for min/max-width CSS3 Media Queries
+      For optimal performance, use a custom Modernizr build: www.modernizr.com/download/ -->
+   <script src="{{ STATIC_URL }}scripts/modernizr-2.6.1.min.js"></script>
+   <!--
+   <script type="text/javascript">
+      var _gaq = _gaq || [];
+      _gaq.push(['_setAccount', 'UA-3182578-6']);
+      _gaq.push(['_trackPageview']);
+      (function() {
+         var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+         ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+         var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+      })();
+   </script>
+   -->
+</head>
+
+<body data-accent="blue">
+      <div class="navbar navbar-fixed-top">
+        <div class="navbar-inner">
+          <div class="container">
+            <ul class="nav">
+              <li class="active"><a href="{% url mysite.views.get_results %}"><i class="icon-lab icon-white"></i>&nbsp;&nbsp;Essay Analysis</a></li>
+              <li><a href="{% url mysite.views.show_stats %}"><i class="icon-stats-up icon-white"></i>&nbsp;&nbsp;Stats</a></li>
+              <li><a href="http://rsinayev.com"><i class="icon-user icon-white"></i>&nbsp;&nbsp;About Me</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <header class="page-header" style="padding: 20px 0 0 0;">
+         <div class="row-fluid">
+            <div class="inner center">
+               <h1><a href="{% url mysite.views.get_results %}"> StereotypeMe!</a> <small>Find out more about yourself</small></h1>
+               <!-- <div class="spacer100"></div> -->
+            </div>
+         </div>
+      </header>
+      <div class="row-fluid span12">
+        <div class="spacer10"></div>
+        <div class="span12 page-header metro" id="tldr"> 
+          <h2 class="center">TL;DR</h2>
+            <div class="spacer20"></div>
+            <div class="span12">
+              <ul class="thumbnails" style="display: inline-block; vertical-align:top; margin-right: 7%">
+                <li class="span2">
+                  <a href="#age" class="tile square text">
+                    <div class="text-big">{{profile.predictions.age}}</div>
+                    <div class="text">Years Old</div>
+                  </a>
+                </li>
+                <li class="span2">
+                  <a href="#gender" class="tile app">
+                    {% if profile.predictions.gender == "Girl" %}
+                      <div class="image-wrapper" ><img src="{{ STATIC_URL }}files/gender_f.svg" type="image/svg+xml"></div>
+                    {% else %}
+                      <div class="image-wrapper" ><img src="{{ STATIC_URL }}files/gender_m.svg" type="image/svg+xml"></div>
+                    {% endif %}
+                    <div class="app-label">{{profile.predictions.gender}}</div>
+                    <div class="app-count">{{profile.probabilities.gender}}%</div>
+                  </a>
+                </li>
+                <li class="span2">
+                  <a href="#religion" class="tile app">
+                    {% if profile.predictions.religion == "Spiritual" %}
+                      <div class="image-wrapper"><img src="{{ STATIC_URL }}files/religion_r.svg" type="image/svg+xml"></div>
+                    {% else %}
+                      <div class="image-wrapper"><img src="{{ STATIC_URL }}files/religion_a.svg" type="image/svg+xml"></div>
+                    {% endif %}
+                    <div class="app-label">{{profile.predictions.religion}}</div>
+                    <div class="app-count">{{profile.probabilities.religion}}%</div>
+                  </a>
+                </li>
+                <li class="span2">
+                  <a href="#bodytype" class="tile app">
+                    {% if profile.predictions.bodytype == "Lean" %}
+                      <div class="image-wrapper"><img src="{{ STATIC_URL }}files/bodytype_n.svg" type="image/svg+xml"></div>
+                    {% else %}
+                      <div class="image-wrapper"><img src="{{ STATIC_URL }}files/bodytype_o_gs.svg" type="image/svg+xml"></div>
+                    {% endif %}
+                    <div class="app-label">{{profile.predictions.bodytype}}</div>
+                    <div class="app-count">{{profile.probabilities.bodytype}}%</div>
+                  </a>
+                </li>
+                <li class="span2">
+                  <a href="#smoking" class="tile app" style="vertical-align: top;">
+                    {% if profile.predictions.smoking == "Nonsmoker" %}
+                      <div class="image-wrapper"><img src="{{ STATIC_URL }}files/smoking_n.svg" type="image/svg+xml"></div>
+                    {% else %}
+                      <div class="image-wrapper"><img src="{{ STATIC_URL }}files/smoking_y.svg" type="image/svg+xml"></div>
+                    {% endif %}
+                    <div class="app-label">{{profile.predictions.smoking}}</div>
+                    <div class="app-count">{{profile.probabilities.smoking}}%</div>
+                  </a>
+                </li>
+                <li class="span2">
+                  <a href="#ethnicities" class="tile app">
+                    {% if profile.predictions.ethnicities == "White" %}
+                      <div class="image-wrapper"><img src="{{ STATIC_URL }}files/ethnicities_w.svg" type="image/svg+xml"></div>
+                    {% else %}
+                      {% if profile.predictions.ethnicities == "Asian" %}
+                        <div class="image-wrapper"><img src="{{ STATIC_URL }}files/ethnicities_a.svg" type="image/svg+xml"></div>
+                      {% else %}
+                        <div class="image-wrapper"><img src="{{ STATIC_URL }}files/ethnicities_b.svg" type="image/svg+xml"></div>
+                      {% endif %}
+                    {% endif %}
+                    <div class="app-label">{{profile.predictions.ethnicities}}</div>
+                    <div class="app-count">{{profile.probabilities.ethnicities}}%</div>
+                  </a>
+                </li>
+              </ul>
+            </div>
+        </div>
+        <div class="span12 page-header" id="e_length"> 
+          <h2 class="center">Your Essay</h2>
+            <div class="spacer20"></div>
+            <div class="span4">
+              <p> You used <strong>{{profile.num_words}}</strong> words total. <br>
+                {{profile.description}} <br>
+                On the right you can see where you stand compared to others.
+              </p>
+              <p>
+                As you can see, most people don't write very much, and we are only
+                collecting essays that are at least 150 words long.  
+                That's why the line doesn't start at zero.
+              </p>
+              <p>
+                You can see more general trends in the <a href="{% url mysite.views.show_stats %}"><strong>Stats</strong></a> section.
+              </p>
+              <p>
+                Below you will find estimated predictions, 
+                estimated confidence probabilities of those predictions, and some of the words or word combinations 
+                that you used that made us think that you belong to that group. 
+                The bigger and the "redder" the word is, the more it was responsible 
+                for putting you in that category.
+              </p>
+              <p>A couple of things to remember: all of the words in the word cloud picture are fairly important (even the small ones) and the words sizes correspond to ordinal, not quantitative measurements of actual word weights.  So, for example, the biggest "red" word may be a lot or only a little more important than second largest/biggest red word, however the ranks of the "importance weights" are preserved.
+              </p>
+              <p>
+                On the right in each section are the graphs with highest weighted words/word combinations that qualify someone as belonging to each group. The bigger the bar, the more important it is. The weights can only be compared to other weights on the same chart. These are not specific to you. 
+              </p>
+              <p>
+                tl;dr: Click on the buttons to see the words. Words that pop up are specific to you.  Words in the bar charts are not specific to you.
+              </p>
+            </div>
+            <img class="span6" style="height : 440; width : 600;" src="/results/lengraph.png">
+
+             <!-- <button type="button" class="btn btn-info" data-toggle="collapse" data-target="#demo"> -->
+               <!-- simple collapsible -->
+             <!-- </button> -->
+            <!-- <div id="demo" class="collapse in"> <h1>inside</h1> </div> -->
+        </div>
+        <div class="span12 page-header" id="age">
+            <h2 class="center">Age</h2>
+            <div class="spacer20"></div>
+            <div class="span4">
+              <p>
+              You are probably <span class="color-blue">{{profile.predictions.age}}</span>. Unfortunately, no words or probabilities for you here.  We tend to get the ages fairly close most of the time though.  But you probably want to see a pretty graph anyway.  This one shows our success rate at predicting people's ages so far. Zero on the X axis corresponds to guessing the age exactly right. It keeps improving, so check back soon.
+              </p>
+            </div>
+            <div class="span6" id="age-confidence-chart" style="height : 300px;">
+              <svg></svg>
+            </div>
+        </div>
+        <div class="span12 page-header" id="gender">
+          <h2 class="center">Gender</h2>
+          <div class="spacer20"></div>
+          <div class="span4">
+            <p>
+            You are probably a <span class="color-blue">{{profile.predictions.gender}}</span> and we are <span class="color-blue">{{profile.probabilities.gender}}%</span> sure. 
+            <br> 
+            <br> 
+            Now in this section most words that guys say seem predictably macho.  Except for "going gay". That's gotta work.  
+            <br>
+            What makes a girl a girl? Baking, heels, chapstick, boobs and a bubbly personality.  
+            </p>
+          </div>
+            <div class="span7" id="gender-chart" style="height : 300px;">
+              <svg></svg>
+            </div>
+          <div class="span12">
+            <button type="button" class="btn btn-info" style="display: table; margin: 0 auto;" data-toggle="collapse" data-target="#gender_img">
+              {% if profile.predictions.gender == "Girl" %}
+                Why do you think I'm a girl?
+              {% else %}
+                Why do you think I'm a guy?
+              {% endif %}
+            </button>
+            <div id="gender_img" class="collapse offset2"> <img src="/images/gender/"> </div>
+          </div>
+        </div>
+        <div class="span12 page-header" id="religion">
+            <h2 class="center">Religion</h2>
+            <div class="spacer20"></div>
+            <div class="span4">
+              <p>
+              You are probably <span class="color-blue">{{profile.predictions.religion}}</span> and we are <span class="color-blue">{{profile.probabilities.religion}}%</span> sure.  <br> <br> Did you know that people who mention the word "god" tend to be less religious than those who don't?  And people who say "lol" are three times less likely to be an atheist?<br> Well, now you do.
+              </p>
+            </div>
+            <div class="span7" id="religion-chart" style="height : 300px;">
+              <svg></svg>
+            </div>
+          <div class="span12">
+            <button type="button" class="btn btn-info" style="display: table; margin: 0 auto;" data-toggle="collapse" data-target="#religion_img">
+              {% if profile.predictions.religion == "Spiritual" %}
+                Why do you think I'm if so religious?
+              {% else %}
+                Why do you think I'm not religious?
+              {% endif %}
+            </button>
+            <div id="religion_img" class="collapse offset2"> <img src="/images/religion/"> </div>
+          </div>
+        </div>
+        <div class="span12 page-header" id="bodytype">
+          <h2 class="center">Body Type</h2>
+          <div class="spacer20"></div>
+          <div class="span4">
+            <p>
+            You are probably <span class="color-blue">{{profile.predictions.bodytype}}</span> and we are <span class="color-blue">{{profile.probabilities.bodytype}}%</span> sure.<br><br>  Watching Glee officially makes you fat.
+            </p>
+          </div>
+            <div class="span7" id="bodytype-chart" style="height : 300px;">
+              <svg></svg>
+            </div>
+          <div class="span12">
+            <button type="button" style="display: table; margin: 0 auto;" class="btn btn-info" data-toggle="collapse" data-target="#bodytype_img">
+             Why is this even here?
+            </button>
+            <div id="bodytype_img" class="collapse offset2"> <img src="/images/bodytype/"> </div>
+          </div>
+        </div>
+        <div class="span12 page-header" id="smoking">
+          <h2 class="center">Smoking</h2>
+          <div class="spacer20"></div>
+          <div class="span4">
+            <p>
+            You are probably a <span class="color-blue">{{profile.predictions.smoking}}</span> and we are <span class="color-blue">{{profile.probabilities.smoking}}%</span> sure.<br> <br> "Chocolate" and "With Friends"? What?  
+            </p>
+          </div>
+            <div class="span7" id="smoking-chart" style="height : 300px;">
+              <svg></svg>
+            </div>
+          <div class="span12">
+            <button type="button" style="display: table; margin: 0 auto;" class="btn btn-info" data-toggle="collapse" data-target="#smoking_img">
+             Meh
+            </button>
+            <div id="smoking_img" class="collapse offset2"> <img src="/images/smoking/"> </div>
+          </div>
+        </div>
+        <div class="span12 page-header" id="ethnicities">
+          <h2 class="center">Ethnicities</h2>
+          <div class="spacer20"></div>
+          <div class="span4">
+            <p>
+            You are probably <span class="color-blue">{{profile.predictions.ethnicities}}</span> and we are <span class="color-blue">{{profile.probabilities.ethnicities}}%</span> sure. 
+            </p>
+          </div>
+            <div class="span7" id="ethnicities-chart" style="height : 300px;">
+              <svg></svg>
+            </div>
+          <div class="span12">
+            <button type="button" style="display: table; margin: 0 auto;"class="btn btn-info" data-toggle="collapse" data-target="#ethnicities_img">
+             This is just racist
+            </button>
+            <div id="ethnicities_img" class="collapse offset2"> <img src="/images/ethnicities/"> </div>
+          </div>
+        </div>
+
+           <!-- Grab Google CDN's jQuery. fall back to local if necessary -->
+       <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+       <script>window.jQuery || document.write("<script src='{{ STATIC_URL }}scripts/jquery-1.8.2.m in.js'>\x3C/script>")</script>
+       <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.9.2/jquery-ui.min.js"></script>
+       <script type="text/javascript" src="{{ STATIC_URL }}scripts/google-code-prettify/prettify.js"></script>
+       <script type="text/javascript" src="{{ STATIC_URL }}scripts/jquery.mousewheel.js"></script>
+       <script type="text/javascript" src="{{ STATIC_URL }}scripts/jquery.scrollTo.js"></script>
+       <script type="text/javascript" src="{{ STATIC_URL }}scripts/bootstrap.min.js"></script>
+       <script type="text/javascript" src="{{ STATIC_URL }}scripts/bootmetro.js"></script>
+       <script type="text/javascript" src="{{ STATIC_URL }}scripts/bootmetro-charms.js"></script>
+       <script type="text/javascript" src="{{ STATIC_URL }}scripts/demo.js"></script>
+       <script type="text/javascript" src="{{ STATIC_URL }}scripts/holder.js"></script>
+       <script type="text/javascript" src="{{ STATIC_URL }}scripts/d3.v2.min.js"></script>
+       <script type="text/javascript" src="{{ STATIC_URL }}scripts/nv.d3.js"></script> 
+       <script type="text/javascript" src="{{ STATIC_URL }}scripts/my_scripts.js"></script>
+       <!-- <script type="text/javascript" src="{{ STATIC_URL }}scripts2/multiBarHorizontalChart2.js"></script> -->
+       <script type="text/javascript">
+          $(".metro").metro();
+       </script>
+       <!-- <script>type="text/javascript" src="{{ STATIC_URL }}scripts/age_confidence.js"></script> -->
+       <!-- age accuracy data -->
+       <script>
+        var age_conf_data =  [
+                           {
+                             values: [
+                                 { x : 0, y : .3066},
+                                 { x : 1, y : .5660},
+                                 { x : 2, y : .7570},
+                                 { x : 3, y : .8816},
+                                 { x : 4, y : .9473},
+                                 { x : 5, y : .9786},
+                                 { x : 6, y : .9928},
+                                 { x : 7, y : .9976},
+                                 { x : 8, y : .9993},
+                                 { x : 9, y : .9997},
+                                 { x : 10, y : .9999},
+                                 { x : 11, y : 1.000},
+                                 ],
+                                 key: "Percent Essays Predicted Correctly",
+                                 color: '#bd362f'
+                           }
+                         ];
+                      nv.addGraph(function() {
+                         var chart = nv.models.lineChart();
+
+                         chart.xAxis
+                             .axisLabel('Within Years')
+                             .tickFormat(d3.format('.1d'));
+
+                         chart.yAxis
+                             .axisLabel('Percent Right').margin({left:85})
+                             .tickFormat(d3.format('.1%'));
+                         chart.margin({bottom: 60, left: 100, right:60});
+                         d3.select('#age-confidence-chart svg').datum(age_conf_data).transition().duration(500).call(chart);
+                         nv.utils.windowResize(chart.update);
+                         return chart;
+                       });
+       </script>
+       <!-- gender data and chart -->
+       <script>
+          var gender_data= [
+            {
+            "key": "Girls",
+            "color": "#0B6EC3",
+            "values": [
+                   { x : "Girl", y : 29.50/29.50},
+                   { x : "Baking", y : 18.00/29.50},
+                   { x : "A guy", y : 17.26/29.50},
+                   { x : "Heels", y : 15.45/29.50},
+                   { x : "Chick", y : 13.57/29.50},
+                   { x : "Chapstick", y : 12.78/29.50},
+                   { x : "Dancing", y : 12.57/29.50},
+                   { x : "Boobs", y : 11.88/29.50},
+                   { x : "Sewing", y : 10.64/29.50},
+                   { x : "Makeup", y : 10.61/29.50},
+                   { x : "Chocolate", y : 10.60/29.50},
+                   { x : "Hair", y : 10.43/29.50},
+                   { x : "Female", y : 10.40/29.50},
+                   { x : "Bubbly", y : 9.46/29.50},
+            ]
+          },
+          {
+            "key": "Guys",
+            "color": "#bd362f",
+            "values": [
+                   { x : "Guy", y : 38.92/38.92},
+                   { x : "Beard", y : 17.11/38.92},
+                   { x : "A girl", y : 15.53/38.92},
+                   { x : "Computers", y : 11.81/38.92},
+                   { x : "Guitar", y : 11.02/38.92},
+                   { x : "Dude", y : 10.24/38.92},
+                   { x : "Sports", y : 9.89/38.92},
+                   { x : "Masculine", y : 9.71/38.92},
+                   { x : "Going gay", y : 9.33/38.92},
+                   { x : "Fixing", y : 9.21/38.92},
+                   { x : "People laugh", y : 8.82/38.92},
+                   { x : "Cars", y : 8.56/38.92},
+                   { x : "Chess", y : 8.13/38.92},
+                   { x : "Engineering", y : 7.88/38.92},
+            ]
+          },
+          ];
+          nv.addGraph(function() {
+          var chart_gender = nv.models.multiBarHorizontalChart()
+              .margin({top: 30, right: 20, bottom: 50, left: 175})
+              .showValues(false)
+              .tooltips(false)
+              .showControls(false);
+          chart_gender.yAxis
+              .tickFormat(d3.format('.d'));
+          d3.select('#gender-chart svg')
+              .datum(gender_data)
+              .transition().duration(500)
+              .call(chart_gender);
+          // nv.utils.windowResize(chart_gender.update);
+          return chart_gender;
+          });
+       </script>
+       <!-- religion data and chart -->
+       <script>
+          var religion_data= [
+            {
+            "key": "Spiritual/Religious",
+            "color": "#0B6EC3",
+            "values": [
+                   { x : "Family", y : 16.06/16.06},
+                   { x : "Jewish", y : 8.18/16.06},
+                   { x : "Faith", y : 6.51/16.06},
+                   { x : "Sports", y : 6.32/16.06},
+                   { x : "LOL", y : 5.51/16.06},
+                   { x : "Christian", y : 5.45/16.06},
+                   { x : "Smile", y : 5.32/16.06},
+                   { x : "Bible", y : 5.23/16.06},
+                   { x : "Love", y : 3.66/16.06},
+                   { x : "God family", y : 3.58/16.06},
+                   { x : "Business", y : 3.57/16.06},
+                   { x : "Meditation", y : 3.30/16.06},
+                   { x : "Basketball", y : 3.21/16.06},
+                   { x : "Country", y : 3.12/16.06},
+            ]
+          },
+          {
+            "key": "Freethinkers",
+            "color": "#bd362f",
+            "values": [
+                   { x : "Science", y : 7.85/7.85},
+                   { x : "Atheist", y : 7.57/7.85},
+                   { x : "Reddit", y : 7.04/7.85},
+                   { x : "Internet", y : 6.75/7.85},
+                   { x : "God Delusion", y : 5.83/7.85},
+                   { x : "Dawkins", y : 5.27/7.85},
+                   { x : "Tattoos", y : 4.67/7.85},
+                   { x : "Shit", y : 4.53/7.85},
+                   { x : "Metal", y : 4.47/7.85},
+                   { x : "Universe", y : 4.36/7.85},
+                   { x : "Drinking", y : 4.20/7.85},
+                   { x : "Sex", y : 4.04/7.85},
+                   { x : "Fuck", y : 3.96/7.85},
+                   { x : "Breaking Bad", y : 3.92/7.85},
+            ]
+          },
+          ];
+          nv.addGraph(function() {
+          var chart_religion = nv.models.multiBarHorizontalChart()
+              .margin({top: 30, right: 20, bottom: 50, left: 175})
+              .showValues(false)
+              .tooltips(false)
+              .showControls(false);
+          chart_religion.yAxis
+              .tickFormat(d3.format('.d'));
+          d3.select('#religion-chart svg')
+              .datum(religion_data)
+              .transition().duration(500)
+              .call(chart_religion);
+          // nv.utils.windowResize(chart_religion.update);
+          return chart_religion;
+          });
+       </script>
+
+       <!-- bodytype data and chart -->
+       <script>
+          var bodytype_data= [
+            {
+            "key": "Chubbies",
+            "color": "#0B6EC3",
+            "values": [
+                   { x : "Weight", y : 7.99/7.99},
+                   { x : "Big guy", y : 5.94/7.99},
+                   { x : "Chubby", y : 5.74/7.99},
+                   { x : "Size", y : 5.59/7.99},
+                   { x : "Beard", y : 5.44/7.99},
+                   { x : "Glee", y : 4.19/7.99},
+                   { x : "Full Figured", y : 3.70/7.99},
+                   { x : "Laugh", y : 3.67/7.99},
+                   { x : "My sense", y : 3.65/7.99},
+                   { x : "Teddy bear", y : 3.58/7.99},
+                   { x : "Internet", y : 3.53/7.99},
+                   { x : "Fat", y : 3.53/7.99},
+                   { x : "Awesome", y : 3.28/7.99},
+                   { x : "Car", y : 3.07/7.99},
+            ]
+          },
+          {
+            "key": "Lean ppl",
+            "color": "#bd362f",
+            "values": [
+                   { x : "Running", y : 11.06/11.06},
+                   { x : "Food", y : 7.66/11.06},
+                   { x : "Active", y : 7.53/11.06},
+                   { x : "Dancing", y : 7.29/11.06},
+                   { x : "Yoga", y : 7.09/11.06},
+                   { x : "Eat", y : 7.04/11.06},
+                   { x : "Athletic", y : 6.41/11.06},
+                   { x : "Sports", y : 5.82/11.06},
+                   { x : "Soccer", y : 5.82/11.06},
+                   { x : "Gym", y : 5.42/11.06},
+                   { x : "Coffee", y : 5.25/11.06},
+                   { x : "Snowboarding", y : 4.77/11.06},
+                   { x : "Rock climbing", y : 4.76/11.06},
+                   { x : "Fashion", y : 4.62/11.06},
+            ]
+          },
+          ];
+          nv.addGraph(function() {
+          var chart_bodytype = nv.models.multiBarHorizontalChart()
+              .margin({top: 30, right: 20, bottom: 50, left: 175})
+              .showValues(false)
+              .tooltips(false)
+              .showControls(false);
+          chart_bodytype.yAxis
+              .tickFormat(d3.format('.d'));
+          d3.select('#bodytype-chart svg')
+              .datum(bodytype_data)
+              .transition().duration(500)
+              .call(chart_bodytype);
+          // nv.utils.windowResize(chart_bodytype.update);
+          return chart_bodytype;
+          });
+       </script>
+
+       <!-- smoking data and chart -->
+       <script>
+          var smoking_data= [
+            {
+            "key": "Smokers",
+            "color": "#0B6EC3",
+            "values": [
+                   { x : "Cigarettes", y : 15.4/15.4},
+                   { x : "Smoking", y : 9.25/15.4},
+                   { x : "Drinking", y : 8.77/15.4},
+                   { x : "Shit", y : 8.01/15.4},
+                   { x : "Tattoos", y : 7.00/15.4},
+                   { x : "Weed", y : 6.80/15.4},
+                   { x : "Partying", y : 5.63/15.4},
+                   { x : "Loud", y : 5.27/15.4},
+                   { x : "Fuck", y : 5.23/15.4},
+                   { x : "Coffee", y : 5.19/15.4},
+                   { x : "Pool", y : 4.93/15.4},
+                   { x : "Dubstep", y : 4.85/15.4},
+                   { x : "Sex", y : 4.78/15.4},
+                   { x : "Bar", y : 4.77/15.4},
+            ]
+          },
+          {
+            "key": "Nonsmokers",
+            "color": "#bd362f",
+            "values": [
+                   { x : "Running", y : 7.67/7.67},
+                   { x : "Sports", y : 5.71/7.67},
+                   { x : "Working out", y : 5.66/7.67},
+                   { x : "Chocolate", y : 5.47/7.67},
+                   { x : "Exercise", y : 5.33/7.67},
+                   { x : "Baking", y : 4.65/7.67},
+                   { x : "Health", y : 4.57/7.67},
+                   { x : "Basketball", y : 4.14/7.67},
+                   { x : "Family", y : 4.14/7.67},
+                   { x : "Gym", y : 4.11/7.67},
+                   { x : "Dinner", y : 3.81/7.67},
+                   { x : "Yoga", y : 3.75/7.67},
+                   { x : "With friends", y : 3.57/7.67},
+                   { x : "Kindle", y : 3.49/7.67},
+            ]
+          },
+          ];
+          nv.addGraph(function() {
+          var chart_smoking = nv.models.multiBarHorizontalChart()
+              .margin({top: 30, right: 20, bottom: 50, left: 175})
+              .showValues(false)
+              .tooltips(false)
+              .showControls(false);
+          chart_smoking.yAxis
+              .tickFormat(d3.format('.d'));
+          d3.select('#smoking-chart svg')
+              .datum(smoking_data)
+              .transition().duration(500)
+              .call(chart_smoking);
+          // nv.utils.windowResize(chart_smoking.update);
+          return chart_smoking;
+          });
+       </script>
+       <!-- ethnicities data and chart -->
+       <script>
+          var ethnicities_data = [
+                      {
+                        "key": "White",
+                        "color": "#0B6EC3",
+                        "values": [
+                               { x : "Eyes", y : 11.6/11.6},
+                               { x : "Italian", y : 7.37/11.6},
+                               { x : "Blue", y : 6.50/11.6},
+                               { x : "Classic Rock", y : 5.22/11.6},
+                               { x : "Beard", y : 5.18/11.6},
+                               { x : "Beer", y : 5.17/11.6},
+                               { x : "Coffee", y : 5.03/11.6},
+                               { x : "Anything", y : 4.885/11.6},
+                               { x : "Tattoos", y : 4.799/11.6},
+                               { x : "Country", y : 4.27/11.6},
+                               { x : "Dog", y : 4.12/11.6},
+                               { x : "Classic", y : 4.02/11.6},
+                               { x : "Camping", y : 3.96/11.6},
+                               { x : "Hair", y : 3.92/11.6},
+                        ]
+                      },
+                      {
+                        "key": "Black",
+                        "color": "#bd362f",
+                        "values": [
+                               { x : "Black", y : 10.98/10.98},
+                               { x : "My Smile", y : 10.43/10.98},
+                               { x : "God", y : 9.71/10.98},
+                               { x : "lol", y : 8.81/10.98},
+                               { x : "Jamaican", y : 7.40/10.98},
+                               { x : "African", y : 7.12/10.98},
+                               { x : "Cool", y : 6.89/10.98},
+                               { x : "R&B", y : 6.77/10.98},
+                               { x : "Women", y : 6.29/10.98},
+                               { x : "Kanye", y : 6.13/10.98},
+                               { x : "Soul", y : 6.12/10.98},
+                               { x : "Reggae", y : 5.58/10.98},
+                               { x : "Writing", y : 5.31/10.98},
+                               { x : "Boondocks", y : 5.25/10.98},
+                        ]
+                      },
+                      {
+                        "key": "Asian",
+                        "color": "#49afcd",
+                        "values": [
+                               { x : "Korean", y : 15.87/15.87},
+                               { x : "Chinese", y : 9.30/15.87},
+                               { x : "Food", y : 7.78/15.87},
+                               { x : "Eating", y : 6.67/15.87},
+                               { x : "Friends", y : 5.91/15.87},
+                               { x : "Haha", y : 5.55/15.87},
+                               { x : "Internet", y : 5.03/15.87},
+                               { x : "Foodie", y : 4.79/15.87},
+                               { x : "EDM", y : 4.74/15.87},
+                               { x : "Tennis", y : 4.66/15.87},
+                               { x : "Pop", y : 4.63/15.87},
+                               { x : "Trance", y : 4.56/15.87},
+                               { x : "Inception", y : 4.44/15.87},
+                               { x : "HIMYM", y : 4.43/15.87},
+                        ]
+                      },
+                    ];
+          nv.addGraph(function() {
+          var chart_ethnicities = nv.models.multiBarHorizontalChart()
+              .margin({top: 30, right: 20, bottom: 50, left: 175})
+              .showValues(false)
+              .tooltips(false)
+              .showControls(false);
+          chart_ethnicities.yAxis
+              .tickFormat(d3.format('.d'));
+          d3.select('#ethnicities-chart svg')
+              .datum(ethnicities_data)
+              .transition().duration(500)
+              .call(chart_ethnicities);
+          // nv.utils.windowResize(chart_ethnicities.update);
+          return chart_ethnicities;
+          });
+       </script>
+    </div>
+</body>
+</html>

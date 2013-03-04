@@ -1,0 +1,33 @@
+BEST PARAMETERS WHEN TRAINED ON 1/3 of the DATA.
+ACCURACY IS MUCH IMPROVED WHEN TRAINED ON THE WHOLE DATASET
+
+
+ethnicities
+{<class 'sklearn.svm.classes.LinearSVC'>: 
+{'c': 1.1000000000000001, 'accuracy': 0.76556776556776551}, 
+<class 'sklearn.linear_model.logistic.LogisticRegression'>: 
+{'c': 5.0999999999999996, 'accuracy': 0.76082740788623138}}
+
+gender
+{<class 'sklearn.svm.classes.LinearSVC'>: 
+{'c': 0.59999999999999998, 'accuracy': 0.88423786094130508}, 
+<class 'sklearn.linear_model.logistic.LogisticRegression'>: 
+{'c': 5.0999999999999996, 'accuracy': 0.88106952934744798}}
+
+bodytype
+{<class 'sklearn.svm.classes.LinearSVC'>: 
+{'c': 0.59999999999999998, 'accuracy': 0.68895481515289825}, 
+<class 'sklearn.linear_model.logistic.LogisticRegression'>: 
+{'c': 5.0999999999999996, 'accuracy': 0.68941122774988595}}
+
+smoking
+{<class 'sklearn.svm.classes.LinearSVC'>: 
+{'c': 0.10000000000000001, 'accuracy': 0.69911004031861534}, 
+<class 'sklearn.linear_model.logistic.LogisticRegression'>: 
+{'c': 2.6000000000000001, 'accuracy': 0.70038843544104634}}
+
+religion
+{<class 'sklearn.svm.classes.LinearSVC'>: 
+{'c': 0.59999999999999998, 'accuracy': 0.78145557063798687}, 
+<class 'sklearn.linear_model.logistic.LogisticRegression'>: 
+{'c': 3.1000000000000001, 'accuracy': 0.7815077790539835}}

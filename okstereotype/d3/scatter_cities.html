@@ -1,0 +1,125 @@
+<!DOCTYPE html> 
+<meta charset="utf-8">
+<!-- <script src="http://d3js.org/d3.v3.min.js"></script> -->
+<script src="d3.v2.min.js"></script>
+<script src="nv.d3.js"></script> 
+<link href="nv.d3.css" rel="stylesheet" type="text/css">
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+<script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.9.2/jquery-ui.min.js"></script>
+<style>
+#chart svg {
+  height: 500px;
+}
+text {
+  font: 22px sans-serif;
+}
+</style>
+
+
+<div id="chart">
+  <svg></svg>
+</div>
+
+<script>
+
+var scatter_data = [
+  {
+    key: "New York",
+    values:
+      [      
+        { x : 1.0, size : 1601948, y: 0.375},
+      ]
+  },
+    {
+    key: "Brooklyn",
+    values:
+      [
+        { x : 0.6417, size : 2532645 , y: 0.336},
+      ]
+    },
+    {
+    key: "Chicago",
+    values:
+      [
+        { x : 0.6093, size : 2707120 , y: 0.3641},
+      ]
+    },
+    {
+    key: "Los Angeles",
+    values:
+      [
+        { x : 0.53804, size : 3819702 , y: 0.318},
+      ]
+    },
+    {
+    key: "San Francisco",
+    values:
+      [
+        { x : 0.44344, size : 812826 , y:  0.303},
+      ]
+    },
+    {
+    key: "Seattle",
+    values:
+      [
+        { x : 0.36744, size : 620778 , y: 0.30987},
+      ]
+    },
+    {
+    key: "Austin",
+    values:
+      [
+        { x : 0.36227, size : 820611 , y: 0.299},
+      ]
+
+    },
+    {
+    key: "Philadelphia",
+    values:
+      [
+        { x : 0.3331, size : 1536471 , y: 0.371485},
+      ]
+    },
+    {
+    key: "Washington DC",
+    values:
+      [
+        { x : 0.2661, size : 617996 , y: 0.4014},
+      ]
+    },
+    {
+    key: "Boston",
+    values:
+      [
+        { x : 0.2068, size : 625087 , y: 0.4063},
+      ]
+    },
+    {
+    key: "Miami",
+    values:
+      [
+        { x : 0.1277, size : 408750 , y: 0.2696},
+      ]
+    },
+    {
+    key: "Baltimore",
+    values:
+      [
+        { x : 0.0989, size : 619493 , y: 0.358},
+      ]
+    }
+]
+nv.addGraph(function() {  
+    var chart = nv.models.scatterChart().showDistX(true).showDistY(true).sizeRange([650,6000]);
+    chart.xAxis.axisLabel("OkC users (scaled to NYC being max)").tickFormat(d3.format(".2f"));
+    chart.xAxis.showMaxMin(true);
+    chart.yAxis.axisLabel("Percent Girls in the City").margin({left:85}).tickFormat(d3.format(".0%"));
+    chart.margin({bottom: 60, left: 100, right:60});
+    chart.showDistX(true);
+    chart.tooltipContent(function(key, y, e, graph) { return "<h3>" + key + "</h3>" + " " + y });
+    d3.select('#chart svg').datum(scatter_data).transition().duration(500).call(chart);
+    nv.utils.windowResize(chart.update);
+    return chart;
+});
+</script>
+</body>

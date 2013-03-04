@@ -1,0 +1,184 @@
+<!doctype html>
+<!-- paulirish.com/2008/conditional-stylesheets-vs-css-hacks-answer-neither/ -->
+<!--[if lt IE 7]> <html class="no-js ie6 oldie" lang="en"> <![endif]-->
+<!--[if IE 7]>    <html class="no-js ie7 oldie" lang="en"> <![endif]-->
+<!--[if IE 8]>    <html class="no-js ie8 oldie" lang="en"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en"> <!--<![endif]-->
+<head>
+   <meta charset="utf-8" />
+   <!-- Always force latest IE rendering engine (even in intranet) & Chrome Frame -->
+   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+   <!-- Mobile viewport optimized: h5bp.com/viewport -->
+   <meta name="viewport" content="width=1024">
+
+   <title>StereotypeMe!</title>
+
+   <meta name="robots" content="index, nofollow">
+   <meta name="description" content="Stereotyping app for dating websites" />
+   <meta name="keywords" content="StereotypeMe!, stereotypeme, stereotypeme!" />
+   <meta name="author" content="Roman Sinayev"/>
+   
+   <!-- remove or comment this line if you want to use the local fonts -->
+   <link href='http://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700' rel='stylesheet' type='text/css'>
+   <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}content/css/bootstrap.css">
+   <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}content/css/bootstrap-responsive.css">
+   <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}content/css/bootmetro.css">
+   <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}content/css/bootmetro-tiles.css">
+   <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}content/css/bootmetro-charms.css">
+   <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}content/css/metro-ui-light.css">
+   <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}content/css/icomoon.css">
+
+   <!--  these two css are to use only for documentation -->
+   <!-- <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}content/css/demo.css"> -->
+   <!-- <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}scripts/google-code-prettify/prettify.css" > -->
+   <!-- Le fav and touch icons -->
+   <link rel="shortcut icon" href="{{ STATIC_URL }}content/ico/rs.ico">
+   <!-- <link rel="apple-touch-icon-precomposed" sizes="144x144" href="content/ico/apple-touch-icon-144-precomposed.png"> -->
+   <!-- <link rel="apple-touch-icon-precomposed" sizes="114x114" href="content/ico/apple-touch-icon-114-precomposed.png"> -->
+   <!-- <link rel="apple-touch-icon-precomposed" sizes="72x72" href="content/ico/apple-touch-icon-72-precomposed.png"> -->
+   <!-- <link rel="apple-touch-icon-precomposed" href="content/ico/apple-touch-icon-57-precomposed.png"> -->
+  
+   <!-- All JavaScript at the bottom, except for Modernizr and Respond.
+      Modernizr enables HTML5 elements & feature detects; Respond is a polyfill for min/max-width CSS3 Media Queries
+      For optimal performance, use a custom Modernizr build: www.modernizr.com/download/ -->
+   <script src="{{ STATIC_URL }}scripts/modernizr-2.6.1.min.js"></script>
+   <!--
+   <script type="text/javascript">
+      var _gaq = _gaq || [];
+      _gaq.push(['_setAccount', 'UA-3182578-6']);
+      _gaq.push(['_trackPageview']);
+      (function() {
+         var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+         ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+         var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+      })();
+   </script>
+   -->
+</head>
+<body data-accent="blue">
+    <div class="navbar navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container">
+        <ul class="nav">
+          <li class="active"><a href="{% url mysite.views.get_results %}"><i class="icon-lab icon-white"></i>&nbsp;&nbsp;Essay Analysis</a></li>
+          <li><a href="{% url mysite.views.show_stats %}"><i class="icon-stats-up icon-white"></i>&nbsp;&nbsp;Stats</a></li>
+          <li><a href="http://rsinayev.com"><i class="icon-user icon-white"></i>&nbsp;&nbsp;About Me</a></li>
+        </ul>
+        </div>
+      </div>
+    </div>
+    {% if essay_form.errors %}
+        <div class="navbar" style="padding: 16px 0 0 0;">
+            <div class="alert alert-error">
+                <button type="button" class="close" data-dismiss="alert"></button>
+                <i aria-hidden="true" class="icon-x-altx-alt"></i>&nbsp;&nbsp; <strong>Oups!</strong> You messed up with the essay
+            </div>
+        </div>
+    {% endif %}
+    {% if username_form.errors %}
+        <div class="navbar" style="padding: 16px 0 0 0;">
+            <div class="alert alert-error">
+                <button type="button" class="close" data-dismiss="alert"></button>
+                <i aria-hidden="true" class="icon-x-altx-alt"></i>&nbsp;&nbsp; <strong>Oups!</strong> You messed up with the username
+            </div>
+        </div>
+    {% endif %}
+    <div style="width: 970px; margin: 0 auto;">
+    <header class="page-header" style="padding: 20px 0 0 0;">
+          <div class="inner center">
+             <h1><a href="{% url mysite.views.get_results %}"> StereotypeMe!</a> <small>Find out more about yourself</small></h1>
+             <!-- <div class="spacer100"></div> -->
+          </div>
+    </header>
+    </div>
+    <div style="width: 970px; margin: 0 auto;">
+    <div class="row-fluid">
+          <div class="span12 offset1">
+              <p class="lead">We scan your dating profile essays and try to stereotype you. <br> Currently performs best with OkCupid profiles, but you can try essays from other dating<br> websites too. No personal info is stored anywhere.</p> <p class="lead"> It is free and takes about 20 seconds.</p><br>
+          </div>
+        {% if show_essay %}
+          <div class="span12 offset1">
+            <div style="height: 55px; width: 750px;">
+            <h3>We will use this essay:</h3>
+            <div class="topmargin2">
+              <div class="pre-scrollable">
+                <blockquote>
+                    {{ profile.essays }}
+                </blockquote>
+              </div>
+              <div class="spacer10"></div>
+                <form action="/results/" method="post">
+                    <button class="btn btn-block btn-danger" style="width:750px;" name="submit_essay" id="analyze_btn" data-loading-text="Analyzing...">Submit Essay</button>
+                </form>
+                <div class="progress progress-info progress-striped active" id="progress-bar">
+                    <div class="bar"style="width: 0%"></div>
+                </div>
+            </div>
+            </div>
+          </div>
+        {% else %}
+            <div class="span12">
+              <form class="form-horizontal" action="" method="post">
+              {% if username_form.errors %}
+                  <div class="control-group error">
+              {% else %}
+                  <div class="control-group">
+              {% endif %}
+                  <label class="control-label lead" for="id_username">OkCupid Username:</label>
+                    <div class="controls">
+                        {{ username_form.username }}&nbsp;&nbsp;&nbsp;&nbsp;
+                        <button class="btn btn-danger" name="use_username" id="ubtn" data-loading-text="Fetching Essays...">Use Username</button>
+                        {% if username_form.errors %}
+                        <span class="help-block">Problem with username:</span>
+                        <span class="help-block">{{ username_form.username.errors }}</span>
+                        {% else %}
+                        <span class="help-block">Profile has to be publicly accessible.</span>
+                        {% endif %}
+                    </div>
+                  </div>
+              </form>
+            </div>
+            <div class="span12" style= "width:500px; position:relative; left: 410px;">
+                  <h1>OR</h1>
+                  <div class="spacer20"></div>
+            </div>
+            <div class="span12">
+              <form class="form-horizontal" action="" method="post">
+              {% if essay_form.errors %}
+                  <div class="control-group error span8">
+              {% else %}
+                  <div class="control-group span8">
+              {% endif %}
+                    <label class="control-label lead" for="id_message">Essay:</label>
+                      <div class="controls">
+                          {{ essay_form.message }}
+                          <div class="spacer10"></div>
+                          <button class="btn btn-block btn-danger" name="use_essay">Use Essay</button>
+                          <!-- <button class="btn btn-danger btn-large" value="Use Essay" name="use_essay">Use Essay</button> -->
+                          <span class="help-block">{{ essay_form.message.errors }}</span>
+                          <span class="help-block">We will get rid of OkCupid essay titles, so don't worry about those.</span>
+                      </div>
+                  </div>
+              </form>
+            </div>
+
+        {% endif %}
+               <!-- Grab Google CDN's jQuery. fall back to local if necessary -->
+           <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+           <script>window.jQuery || document.write("<script src='{{ STATIC_URL }}scripts/jquery-1.8.2.min.js'>\x3C/script>")</script>
+           <script type="text/javascript" src="{{ STATIC_URL }}scripts/google-code-prettify/prettify.js"></script>
+           <script type="text/javascript" src="{{ STATIC_URL }}scripts/jquery.mousewheel.js"></script>
+           <script type="text/javascript" src="{{ STATIC_URL }}scripts/jquery.scrollTo.js"></script>
+           <script type="text/javascript" src="{{ STATIC_URL }}scripts/bootstrap.min.js"></script>
+           <script type="text/javascript" src="{{ STATIC_URL }}scripts/bootmetro.js"></script>
+           <script type="text/javascript" src="{{ STATIC_URL }}scripts/bootmetro-charms.js"></script>
+           <script type="text/javascript" src="{{ STATIC_URL }}scripts/demo.js"></script>
+           <script type="text/javascript" src="{{ STATIC_URL }}scripts/holder.js"></script>
+            <script type="text/javascript" src="{{ STATIC_URL }}scripts/my_scripts.js"></script>
+           <script type="text/javascript">
+              $(".metro").metro();
+           </script>
+    </div>
+  </div>
+</body>
+</html>

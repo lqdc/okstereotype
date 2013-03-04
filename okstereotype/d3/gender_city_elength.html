@@ -1,0 +1,79 @@
+<!DOCTYPE html> 
+<meta charset="utf-8">
+<!-- <script src="http://d3js.org/d3.v3.min.js"></script> -->
+<script src="d3.v2.min.js"></script>
+<script src="nv.d3.js"></script> 
+<link href="nv.d3.css" rel="stylesheet" type="text/css">
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+<script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.9.2/jquery-ui.min.js"></script>
+<style>
+#chart svg {
+  height: 500px;
+  width: 800px;
+}
+text {
+  font: 12px sans-serif;
+}
+</style>
+
+
+<div id="chart">
+  <svg></svg>
+</div>
+
+<script>
+
+var gender_city_data = [
+  {
+    key: "Guys",
+    color: "#0b6ec3",
+    values:
+      [      
+        { x : "New York", y : 359.45 },
+        { x : "Brooklyn", y : 363.62 },
+        { x : "Chicago", y : 399.94 },
+        { x : "Los Angeles", y : 384.39 },
+        { x : "San Francisco", y : 397.73 },
+        { x : "Seattle", y : 439.03 },
+        { x : "Austin", y : 426.87 },
+        { x : "Philadelphia", y : 390.54 },
+        { x : "Washington", y : 404.17 },
+        { x : "Boston", y : 384.56 },
+        { x : "Miami", y : 356.34 },
+        { x : "Baltimore", y : 408.61 },
+      ]
+  },
+    {
+    key: "Girls",
+    color: "#c3600b",
+    values:
+      [
+        { x : "New York", y : 343.91 },
+        { x : "Brooklyn", y : 362.26 },
+        { x : "Chicago", y : 397.23 },
+        { x : "Los Angeles", y : 383.68 },
+        { x : "San Francisco", y : 384.90 },
+        { x : "Seattle", y : 446.24 },
+        { x : "Austin", y : 427.16 },
+        { x : "Philadelphia", y : 385.45 },
+        { x : "Washington", y : 383.89 },
+        { x : "Boston", y : 376.41 },
+        { x : "Miami", y : 348.26 },
+        { x : "Baltimore", y : 383.44 },
+      ]
+    }
+]
+nv.addGraph(function() {  
+    var chart = nv.models.multiBarChart().clipEdge(true);
+    chart.yAxis.axisLabel("Average Essay Word Count").tickFormat(d3.format(",.1f")).margin({left:75});
+    chart.xAxis.axisLabel("Cities");
+    chart.reduceXTicks(false);
+    chart.xAxis.rotateLabels(-45);
+    chart.margin({bottom: 110, left: 90});
+    chart.forceY([300,400]);
+    d3.select('#chart svg').datum(gender_city_data).transition().duration(500).call(chart);
+    nv.utils.windowResize(chart.update);
+    return chart;
+});
+</script>
+</body>

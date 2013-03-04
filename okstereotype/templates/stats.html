@@ -1,0 +1,596 @@
+<html>
+<!doctype html>
+<!-- paulirish.com/2008/conditional-stylesheets-vs-css-hacks-answer-neither/ -->
+<!--[if lt IE 7]> <html class="no-js ie6 oldie" lang="en"> <![endif]-->
+<!--[if IE 7]>    <html class="no-js ie7 oldie" lang="en"> <![endif]-->
+<!--[if IE 8]>    <html class="no-js ie8 oldie" lang="en"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en"> <!--<![endif]-->
+<head>
+   <meta charset="utf-8" />
+   <!-- Always force latest IE rendering engine (even in intranet) & Chrome Frame -->
+   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+   <!-- Mobile viewport optimized: h5bp.com/viewport -->
+   <meta name="viewport" content="width=device-width">
+
+   <title>StereotypeMe!</title>
+
+   <meta name="robots" content="index, nofollow">
+   <meta name="description" content="Stereotyping app for dating websites" />
+   <meta name="keywords" content="StereotypeMe!, stereotypeme, stereotypeme!" />
+   <meta name="author" content="Roman Sinayev"/>
+   
+   <!-- remove or comment this line if you want to use the local fonts -->
+   <link href='http://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700' rel='stylesheet' type='text/css'>
+
+   <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}content/css/bootstrap.css">
+   <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}content/css/bootstrap-responsive.css">
+   <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}content/css/bootmetro.css">
+   <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}content/css/bootmetro-tiles.css">
+   <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}content/css/bootmetro-charms.css">
+   <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}content/css/metro-ui-light.css">
+   <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}content/css/icomoon.css">
+   <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}content/css/nv.d3.css" >
+   <!--  these two css are to use only for documentation -->
+   <!-- <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}content/css/demo.css"> -->
+   <!-- <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}scripts/google-code-prettify/prettify.css" > -->
+
+   <!-- Le fav and touch icons -->
+   <link rel="shortcut icon" href="{{ STATIC_URL }}content/ico/rs.ico">
+   <!-- <link rel="apple-touch-icon-precomposed" sizes="144x144" href="content/ico/apple-touch-icon-144-precomposed.png"> -->
+   <!-- <link rel="apple-touch-icon-precomposed" sizes="114x114" href="content/ico/apple-touch-icon-114-precomposed.png"> -->
+   <!-- <link rel="apple-touch-icon-precomposed" sizes="72x72" href="content/ico/apple-touch-icon-72-precomposed.png"> -->
+   <!-- <link rel="apple-touch-icon-precomposed" href="content/ico/apple-touch-icon-57-precomposed.png"> -->
+  
+   <!-- All JavaScript at the bottom, except for Modernizr and Respond.
+      Modernizr enables HTML5 elements & feature detects; Respond is a polyfill for min/max-width CSS3 Media Queries
+      For optimal performance, use a custom Modernizr build: www.modernizr.com/download/ -->
+   <script src="{{ STATIC_URL }}scripts/modernizr-2.6.1.min.js"></script>
+   <!--
+   <script type="text/javascript">
+      var _gaq = _gaq || [];
+      _gaq.push(['_setAccount', 'UA-3182578-6']);
+      _gaq.push(['_trackPageview']);
+      (function() {
+         var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+         ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+         var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+      })();
+   </script>
+   -->
+</head>
+<body data-accent="blue">
+    <div class="navbar navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container">
+          <ul class="nav">
+            <li><a href="{% url mysite.views.get_results %}"><i class="icon-lab icon-white"></i>&nbsp;&nbsp;Essay Analysis</a></li>
+            <li class="active"><a href="{% url mysite.views.show_stats %}"><i class="icon-stats-up icon-white"></i>&nbsp;&nbsp;Stats</a></li>
+            <li><a href="http://rsinayev.com"><i class="icon-user icon-white"></i>&nbsp;&nbsp;About Me</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div style="width: 970px; margin: 0 auto;">
+    <header class="page-header" style="padding: 20px 0 0 0;">
+          <div class="inner center">
+             <h1><a href="{% url mysite.views.get_results %}"> StereotypeMe!</a> <small>Find out more about yourself</small></h1>
+          </div>
+    </header>
+  </div>
+    <div style="padding: 20px 0 0 0; width: 970px; margin: 0 auto;">
+        <p class="lead center">Some interesting cool-looking trends from the data.<br></p>
+        <div class="page-header">
+          <h2>Gender And Essay Length Variation With Age</h2>
+          <p>Although the number of users drops precipitously as essay length increases, the drop is not shared equally by different age groups and genders.  It seems that both guys and girls, perhaps either out of past dating experience or out of desperation, tend to put more effort in the essays with age, incidentally increasing the essay length.  Although girls write on average more than guys of the same age, it is interesting to note that on average they look for guys older than themselves.  Therefore, when comparing potential mates, girls initially write significantly less.  However, as they approach their 30s, the trend reverses.
+          <br>
+          Unfortunately, I'm too lazy to make a graph for that observation.
+          </p>
+          <div class="spacer10"></div>
+          <div id="gender-age-elength-chart">
+            <svg style="width: 800px; height: 500px"></svg>
+          </div>
+        </div>
+        <div class="page-header">
+          <h2>Essay Length by City and Gender</h2>
+            I have two theories: either how much one writes is largely cultural with each city having its own "threshold" or it is that the guys and the girls in each city are in a <a href="http://en.wikipedia.org/wiki/Nash_equilibrium">Nash equilibrium</a>/"Keeping up with the Joneses" situation where each person assumes that everyone writes as much as is written in the profiles that they are reading, and they don't want to deviate from it too much.  Of course, another possibility is that all writers live in Seattle. 
+          <div class="spacer10"></div>
+          <div id="city_elength_chart" class="stats-chart">
+            <svg style="width: 800px; height: 500px"></svg>
+          </div>            
+        </div>
+        <div class="page-header">
+          <h2>Cities and Users</h2>
+            Since we are on the topic of cities...  Boston is the place to be.  Here the size of the circles corresponds to the actual city population (real life people).  The farther it is to the right, the more users are from that city.  The higher up it is, the more even the gender ratio.
+          <div class="spacer10"></div>
+          <div id="city_users_chart" class="stats-chart">
+            <svg style="width: 800px; height: 500px"></svg>
+          </div>            
+        </div>
+        <div class="page-header">
+          <h2>Userbase by Age</h2>
+            The guys are late to the party, but the girls leave early.
+          <div class="spacer10"></div>
+          <div id="gender-age-chart" class="stats-chart">
+            <svg style="width: 800px; height: 500px"></svg>
+          </div>            
+        </div>
+        <div class="page-header">
+          <h2>Religion and Ages</h2>
+            To make this even less controversial, let's talk about religion.  It seems like the Jews are more eager to disclose their heritage/religion in the early 20's than any other group.  People who identify as Christian, however, steadily lose ground to Agnosticism and Judaism, although not to Atheism, from the late teens to late 20's.
+          <div class="spacer10"></div>
+          <div id="religion_chart" class="stats-chart">
+            <svg style="width: 800px; height: 500px"></svg>
+          </div>            
+        </div>
+
+    </div>
+      <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+      <script>window.jQuery || document.write("<script src='{{ STATIC_URL }}scripts/jquery-1.8.2.m in.js'>\x3C/script>")</script>
+      <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.9.2/jquery-ui.min.js"></script>
+      <script type="text/javascript" src="{{ STATIC_URL }}scripts/google-code-prettify/prettify.js"></script>
+      <script type="text/javascript" src="{{ STATIC_URL }}scripts/jquery.mousewheel.js"></script>
+      <script type="text/javascript" src="{{ STATIC_URL }}scripts/jquery.scrollTo.js"></script>
+      <script type="text/javascript" src="{{ STATIC_URL }}scripts/bootstrap.min.js"></script>
+      <script type="text/javascript" src="{{ STATIC_URL }}scripts/bootmetro.js"></script>
+      <script type="text/javascript" src="{{ STATIC_URL }}scripts/bootmetro-charms.js"></script>
+      <script type="text/javascript" src="{{ STATIC_URL }}scripts/demo.js"></script>
+      <script type="text/javascript" src="{{ STATIC_URL }}scripts/holder.js"></script>
+      <script type="text/javascript" src="{{ STATIC_URL }}scripts/d3.v2.min.js"></script>
+      <script type="text/javascript" src="{{ STATIC_URL }}scripts/nv.d3.js"></script> 
+      <script type="text/javascript" src="{{ STATIC_URL }}scripts/my_scripts.js"></script>
+      <!-- <script type="text/javascript" src="{{ STATIC_URL }}scripts2/multiBarHorizontalChart2.js"></script> -->
+      <script type="text/javascript">
+       $(".metro").metro();
+      </script>
+      <script>
+
+      var age_elength_data = [
+        {
+          key: "Guys",
+          color: "#0b6ec3",
+          values:
+            [      
+              { x : 18, y : 306.77},
+              { x : 19, y : 335.71},
+              { x : 20, y : 360.12},
+              { x : 21, y : 369.37},
+              { x : 22, y : 381.85},
+              { x : 23, y : 393.69},
+              { x : 24, y : 402.00},
+              { x : 25, y : 409.11},
+              { x : 26, y : 421.40},
+              { x : 27, y : 421.26},
+              { x : 28, y : 434.02},
+              { x : 29, y : 441.63},
+              { x : 30, y : 446.46},
+              { x : 31, y : 445.99},
+              { x : 32, y : 452.90},
+            ]
+        },
+        {
+          key: "Girls",
+          color: "#c3600b",
+          values:
+            [      
+              { x : 18, y : 338.51},
+              { x : 19, y : 352.44},
+              { x : 20, y : 369.14},
+              { x : 21, y : 386.51},
+              { x : 22, y : 391.82},
+              { x : 23, y : 398.73},
+              { x : 24, y : 407.13},
+              { x : 25, y : 419.66},
+              { x : 26, y : 426.60},
+              { x : 27, y : 436.56},
+              { x : 28, y : 446.75},
+              { x : 29, y : 458.91},
+              { x : 30, y : 482.18},
+              { x : 31, y : 487.76},
+              { x : 32, y : 477.39},
+          ]
+        }
+      ]
+
+      nv.addGraph(function() {
+        var chart_ga = nv.models.lineChart();
+
+        chart_ga.xAxis
+            .axisLabel('Ages')
+            .tickFormat(d3.format(',r'));
+
+        chart_ga.yAxis
+            .axisLabel('Avg Word Count')
+            .margin({left:75})
+            .tickFormat(d3.format(',.1f'));
+        chart_ga.margin({bottom: 80, left: 80});
+
+        d3.select('#gender-age-elength-chart svg')
+            .datum(age_elength_data)
+          .transition().duration(500)
+            .call(chart_ga);
+
+
+        nv.utils.windowResize(chart_ga.update);
+
+        return chart_ga;
+      });
+      </script>
+      <script>
+
+      var gender_ethnicities_data = [
+        {
+          key: "Guys",
+          color: "#0b6ec3",
+          values:
+            [      
+              { x : 18, y : 1580 /177335},
+              { x : 19, y : 3915 /177335},
+              { x : 20, y : 6746 /177335},
+              { x : 21, y : 9181 /177335},
+              { x : 22, y : 13148/177335 },
+              { x : 23, y : 16441/177335 },
+              { x : 24, y : 18625/177335 },
+              { x : 25, y : 18867/177335 },
+              { x : 26, y : 18003/177335 },
+              { x : 27, y : 16633/177335 },
+              { x : 28, y : 14582/177335 },
+              { x : 29, y : 12837/177335 },
+              { x : 30, y : 10803/177335 },
+              { x : 31, y : 8797 /177335},
+              { x : 32, y : 7445 /177335},
+            ]
+        },
+          {
+          key: "Girls",
+          color: "#c3600b",
+          values:
+            [
+              { x : 18, y : 2185/177335 },
+              { x : 19, y : 3967/177335 },
+              { x : 20, y : 5481/177335 },
+              { x : 21, y : 6679/177335 },
+              { x : 22, y : 9181/177335 },
+              { x : 23, y : 10436/177335 },
+              { x : 24, y : 9902/177335 },
+              { x : 25, y : 8557/177335 },
+              { x : 26, y : 7243/177335 },
+              { x : 27, y : 5672/177335 },
+              { x : 28, y : 4203/177335 },
+              { x : 29, y : 2962/177335 },
+              { x : 30, y : 1976/177335 },
+              { x : 31, y : 1421/177335 },
+              { x : 32, y : 1094/177335 },
+            ]
+          }
+      ]
+      nv.addGraph(function() {  
+          var chart_g = nv.models.multiBarChart().clipEdge(true);
+          chart_g.yAxis.axisLabel("Percent of Users").tickFormat(d3.format("1.1%"));
+          chart_g.xAxis.axisLabel("Ages");
+          chart_g.margin({bottom: 60, left: 80});
+          chart_g.reduceXTicks(false);
+          d3.select('#gender-age-chart svg').datum(gender_ethnicities_data).transition().duration(500).call(chart_g);
+          nv.utils.windowResize(chart_g.update);
+          return chart_g;
+      });
+      </script>
+      <script>
+
+      var gender_city_data = [
+        {
+          key: "Guys",
+          color: "#0b6ec3",
+          values:
+            [      
+              { x : "New York", y : 359.45 },
+              { x : "Brooklyn", y : 363.62 },
+              { x : "Chicago", y : 399.94 },
+              { x : "Los Angeles", y : 384.39 },
+              { x : "San Francisco", y : 397.73 },
+              { x : "Seattle", y : 439.03 },
+              { x : "Austin", y : 426.87 },
+              { x : "Philadelphia", y : 390.54 },
+              { x : "Washington", y : 404.17 },
+              { x : "Boston", y : 384.56 },
+              { x : "Miami", y : 356.34 },
+              { x : "Baltimore", y : 408.61 },
+            ]
+        },
+          {
+          key: "Girls",
+          color: "#c3600b",
+          values:
+            [
+              { x : "New York", y : 343.91 },
+              { x : "Brooklyn", y : 362.26 },
+              { x : "Chicago", y : 397.23 },
+              { x : "Los Angeles", y : 383.68 },
+              { x : "San Francisco", y : 384.90 },
+              { x : "Seattle", y : 446.24 },
+              { x : "Austin", y : 427.16 },
+              { x : "Philadelphia", y : 385.45 },
+              { x : "Washington", y : 383.89 },
+              { x : "Boston", y : 376.41 },
+              { x : "Miami", y : 348.26 },
+              { x : "Baltimore", y : 383.44 },
+            ]
+          }
+      ]
+      nv.addGraph(function() {  
+          var city_elength_chart = nv.models.multiBarChart().clipEdge(true);
+          city_elength_chart.yAxis.axisLabel("Average Essay Word Count").tickFormat(d3.format(",.1f")).margin({left:75});
+          city_elength_chart.xAxis.axisLabel("Cities");
+          city_elength_chart.reduceXTicks(false);
+          city_elength_chart.xAxis.rotateLabels(-45);
+          city_elength_chart.margin({bottom: 110, left: 90});
+          city_elength_chart.forceY([300,400]);
+          d3.select('#city_elength_chart svg').datum(gender_city_data).transition().duration(500).call(city_elength_chart);
+          nv.utils.windowResize(city_elength_chart.update);
+          return city_elength_chart;
+      });
+      </script>
+      <script>
+
+      var scatter_data = [
+        {
+          key: "New York",
+          values:
+            [      
+              { x : 1.0, size : 1601948, y: 0.375},
+            ]
+        },
+          {
+          key: "Brooklyn",
+          values:
+            [
+              { x : 0.6417, size : 2532645 , y: 0.336},
+            ]
+          },
+          {
+          key: "Chicago",
+          values:
+            [
+              { x : 0.6093, size : 2707120 , y: 0.3641},
+            ]
+          },
+          {
+          key: "Los Angeles",
+          values:
+            [
+              { x : 0.53804, size : 3819702 , y: 0.318},
+            ]
+          },
+          {
+          key: "San Francisco",
+          values:
+            [
+              { x : 0.44344, size : 812826 , y:  0.303},
+            ]
+          },
+          {
+          key: "Seattle",
+          values:
+            [
+              { x : 0.36744, size : 620778 , y: 0.30987},
+            ]
+          },
+          {
+          key: "Austin",
+          values:
+            [
+              { x : 0.36227, size : 820611 , y: 0.299},
+            ]
+
+          },
+          {
+          key: "Philadelphia",
+          values:
+            [
+              { x : 0.3331, size : 1536471 , y: 0.371485},
+            ]
+          },
+          {
+          key: "Washington DC",
+          values:
+            [
+              { x : 0.2661, size : 617996 , y: 0.4014},
+            ]
+          },
+          {
+          key: "Boston",
+          values:
+            [
+              { x : 0.2068, size : 625087 , y: 0.4063},
+            ]
+          },
+          {
+          key: "Miami",
+          values:
+            [
+              { x : 0.1277, size : 408750 , y: 0.2696},
+            ]
+          },
+          {
+          key: "Baltimore",
+          values:
+            [
+              { x : 0.0989, size : 619493 , y: 0.358},
+            ]
+          }
+      ]
+      nv.addGraph(function() {  
+          var city_users_chart = nv.models.scatterChart().showDistX(true).showDistY(true).sizeRange([650,6000]);
+          city_users_chart.xAxis.axisLabel("Users (scaled to NYC being max)").tickFormat(d3.format(".2f"));
+          city_users_chart.xAxis.showMaxMin(true);
+          city_users_chart.yAxis.axisLabel("Percent Girls in the City").margin({left:85}).tickFormat(d3.format(".0%"));
+          city_users_chart.margin({bottom: 60, left: 100, right:60});
+          city_users_chart.showDistX(true);
+          city_users_chart.tooltipContent(function(key, y, e, graph) { return "<h3>" + key + "</h3>" + " " + y + " / " + e });
+          d3.select('#city_users_chart svg').datum(scatter_data).transition().duration(500).call(city_users_chart);
+          nv.utils.windowResize(city_users_chart.update);
+          return city_users_chart;
+      });
+      </script>
+      <script>
+
+      var religion_data = [
+        {
+          key: "Atheism",
+          values:
+            [      
+              { x : 18, y : 536 /19452 },
+              { x : 19, y : 1034/19452 },
+              { x : 20, y : 1534/19452 },
+              { x : 21, y : 1911/19452 },
+              { x : 22, y : 2628/19452 },
+              { x : 23, y : 3271/19452 },
+              { x : 24, y : 3444/19452 },
+              { x : 25, y : 3435/19452 },
+              { x : 26, y : 3264/19452 },
+              { x : 27, y : 2869/19452 },
+              { x : 28, y : 2427/19452 },
+              { x : 29, y : 2036/19452 },
+              { x : 30, y : 1723/19452 },
+              { x : 31, y : 1301/19452 },
+              { x : 32, y : 1067/19452 },
+            ]
+        },
+          {
+          key: "Christianity",
+          values:
+            [
+              { x : 18, y : 791/19452 },
+              { x : 19, y : 1739/19452 },
+              { x : 20, y : 2438/19452 },
+              { x : 21, y : 2958/19452 },
+              { x : 22, y : 3696/19452 },
+              { x : 23, y : 4251/19452 },
+              { x : 24, y : 4166/19452 },
+              { x : 25, y : 3856/19452 },
+              { x : 26, y : 3350/19452 },
+              { x : 27, y : 2893/19452 },
+              { x : 28, y : 2452/19452 },
+              { x : 29, y : 1999/19452 },
+              { x : 30, y : 1568/19452 },
+              { x : 31, y : 1312/19452 },
+              { x : 32, y : 1022/19452 },
+            ]
+          },
+          {
+          key: "Agnosticism",
+          values:
+            [
+              { x : 18, y : 487/19452 },
+              { x : 19, y : 1034/19452 },
+              { x : 20, y : 1571/19452 },
+              { x : 21, y : 2152/19452 },
+              { x : 22, y : 3024/19452 },
+              { x : 23, y : 3585/19452 },
+              { x : 24, y : 3936/19452 },
+              { x : 25, y : 3960/19452 },
+              { x : 26, y : 3636/19452 },
+              { x : 27, y : 3296/19452 },
+              { x : 28, y : 2893/19452 },
+              { x : 29, y : 2360/19452 },
+              { x : 30, y : 1955/19452 },
+              { x : 31, y : 1567/19452 },
+              { x : 32, y : 1332/19452 },
+            ]
+          },
+          {
+          key: "Catholicism",
+          values:
+            [
+              { x : 18, y : 478/19452 },
+              { x : 19, y : 961/19452 },
+              { x : 20, y : 1470/19452 },
+              { x : 21, y : 1834/19452 },
+              { x : 22, y : 2629/19452 },
+              { x : 23, y : 3028/19452 },
+              { x : 24, y : 3194/19452 },
+              { x : 25, y : 3028/19452 },
+              { x : 26, y : 2723/19452 },
+              { x : 27, y : 2347/19452 },
+              { x : 28, y : 1899/19452 },
+              { x : 29, y : 1649/19452 },
+              { x : 30, y : 1283/19452 },
+              { x : 31, y : 1001/19452 },
+              { x : 32, y : 848/19452 },
+            ]
+          },
+          {
+          key: "Other",
+          values:
+            [
+              { x : 18, y : 431/19452 },
+              { x : 19, y : 804/19452 },
+              { x : 20, y : 1324/19452 },
+              { x : 21, y : 1647/19452 },
+              { x : 22, y : 2058/19452 },
+              { x : 23, y : 2414/19452 },
+              { x : 24, y : 2473/19452 },
+              { x : 25, y : 2336/19452 },
+              { x : 26, y : 2184/19452 },
+              { x : 27, y : 1972/19452 },
+              { x : 28, y : 1716/19452 },
+              { x : 29, y : 1505/19452 },
+              { x : 30, y : 1341/19452 },
+              { x : 31, y : 1091/19452 },
+              { x : 32, y : 940/19452 },
+            ]
+          },
+          {
+          key: "Judaism",
+          values:
+            [
+              { x : 18, y : 99/19452 },
+              { x : 19, y : 234/19452 },
+              { x : 20, y : 426/19452 },
+              { x : 21, y : 611/19452 },
+              { x : 22, y : 1123/19452 },
+              { x : 23, y : 1562/19452 },
+              { x : 24, y : 1807/19452 },
+              { x : 25, y : 1678/19452 },
+              { x : 26, y : 1653/19452 },
+              { x : 27, y : 1346/19452 },
+              { x : 28, y : 1171/19452 },
+              { x : 29, y : 944/19452 },
+              { x : 30, y : 695/19452 },
+              { x : 31, y : 570/19452 },
+              { x : 32, y : 456/19452 },
+            ]
+          },
+          {
+          key: "Buddhism",
+          values:
+            [
+              { x : 18, y : 84 /19452  },
+              { x : 19, y : 134/19452  },
+              { x : 20, y : 172/19452  },
+              { x : 21, y : 241/19452  },
+              { x : 22, y : 378/19452  },
+              { x : 23, y : 393/19452  },
+              { x : 24, y : 432/19452  },
+              { x : 25, y : 425/19452  },
+              { x : 26, y : 367/19452  },
+              { x : 27, y : 323/19452  },
+              { x : 28, y : 321/19452  },
+              { x : 29, y : 248/19452  },
+              { x : 30, y : 185/19452  },
+              { x : 31, y : 164/19452  },
+              { x : 32, y : 145/19452  },
+            ]
+          }
+      ]
+      nv.addGraph(function() {  
+          var religion_chart = nv.models.stackedAreaChart().clipEdge(true);
+          religion_chart.yAxis.axisLabel("Percent of Users").tickFormat(d3.format(".1%")).margin({left:75});
+          religion_chart.xAxis.axisLabel("Ages");
+          religion_chart.margin({bottom: 60, left: 80});
+          d3.select('#religion_chart svg').datum(religion_data).transition().duration(500).delay(300).call(religion_chart);
+          nv.utils.windowResize(religion_chart.update);
+          return religion_chart;
+      });
+      </script>
+</body>
+</html>
